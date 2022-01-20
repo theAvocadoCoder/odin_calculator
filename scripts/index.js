@@ -188,7 +188,12 @@ function bindKeys(event) {
 }
 
 function backspaceDisplay() {
-  displayInput.value = removeLastCharInString(displayInput.value);
+  const RemovalObj = removeLastCharInString(displayInput.value);
+  displayInput.value = RemovalObj['newString'];
+  if (RemovalObj['removed'] === '.') {
+    point.disabled = false;
+  }
+
 }
 
 function clearDisplay() {
@@ -224,5 +229,8 @@ function decimalPlacesCount(num) {
 }
 
 function removeLastCharInString(str) {
-  return str.replace(str[str.length - 1], '');
+  return {
+    'newString': str.replace(str[str.length - 1], ''),
+    'removed': str[str.length - 1],
+  }
 }
