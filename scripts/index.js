@@ -235,8 +235,11 @@ function decimalPlacesCount(num) {
 }
 
 function removeLastCharInString(str) {
+  let arr = str.split('');
+  arr.pop();
+
   return {
-    'newString': str.replace(str[str.length - 1], ''),
+    'newString': arr.join(''),
     'removed': str[str.length - 1],
   }
 }
