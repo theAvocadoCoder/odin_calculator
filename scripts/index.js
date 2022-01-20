@@ -203,7 +203,7 @@ function backspaceDisplay() {
 }
 
 function clearDisplay() {
-  displayInputValue = '';
+  displayInput.value = '';
 }
 
 function add(num1, num2) {
