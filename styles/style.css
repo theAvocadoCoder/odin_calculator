@@ -1,6 +1,10 @@
 body {
   box-sizing: border-box;
   margin: 0px;
+  width: 100vw;
+  height: auto;
+  min-height: 90vh;
+  max-height: 100vh;
 }
 
 *,
@@ -11,8 +15,82 @@ body {
 }
 
 #calculator {
-  width: 320px;
-  height: auto;
+  width: 100vw;
+  height: 100vh;
+  background-color: black;
+}
+
+#display {
+  width: 100%;
+  height: 25%;
+  background-color: darkslategray;
+}
+
+#space-div {
+  width: 100%;
+  height: 13.5%;
+}
+
+#keys-div {
+  width: 100%;
+  height: 62.5%;
+  background-color: black;
+}
+
+#left-div {
+  width: 75%;
+  height: 100%;
+}
+
+#numbers-div {
+  width: 100%;
+  height: 80%;
+  flex-wrap: wrap;
+}
+
+#equals {
+  width: 100%;
+  height: 20%;
+  border-radius: 1rem;
+  border: 1px solid aliceblue;
+  background-color: cadetblue;
+  color: aliceblue;
+  font-size: 2rem;
+  justify-content: center;
+  align-items: center;
+}
+
+#numbers-div > div {
+  width: 33.3%;
+  height: 25%;
+  border-radius: 1rem;
+  border: 1px solid aliceblue;
+  background-color: cadetblue;
+  color: aliceblue;
+  font-size: 2rem;
+  justify-content: center;
+  align-items: center;
+}
+
+#right-div {
+  width: 25%;
+  height: 100%;
+}
+
+#right-div > div {
+  width: 100%;
+  height: 20%;
+  border-radius: 1rem;
+  border: 1px solid aliceblue;
+  background-color: coral;
+  color: aliceblue;
+  font-size: 2rem;
+  justify-content: center;
+  align-items: center;
+}
+
+#right-div > div#clear {
+  height: 40%;
 }
 
 .flex-div {
@@ -22,19 +100,24 @@ body {
 .col {
   flex-direction: column;
 }
-
+/*
 #keys-div > div {
-  flex: 1 .3 auto
+  flex: 1 0.3 auto;
 }
 
 #left-div {
-  flex: 3 1 auto
+  flex: 3 1 auto;
 }
 
 #right-div > div {
-  flex: 1 .5 auto
+  flex: 1 0.5 auto;
 }
 
 #clear {
-  flex: 2 1 auto
+  flex: 2 1 auto;
 }
+
+/*
+  Screens:
+    320, 400 
+*/
