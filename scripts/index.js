@@ -44,6 +44,12 @@ function updateDisplayInput(event) {
     displayInput.value += '.';
     point.disabled = true;
   }
+  if (event.target.id === 'subtract'
+      || event.target.id === 'add'
+      || event.target.id === 'multiply'
+      || event.target.id === 'divide') {
+        point.disabled = false;
+      }
 }
 
 function bindKeys(event) {
