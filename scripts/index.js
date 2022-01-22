@@ -1,11 +1,19 @@
 
 /* Variables */
 
+const welcomeMessageContainer = document.getElementById("welcome-message-container");
+const welcomeMessageButton = document.getElementById("welcome-message-button");
+
 const displayInput = document.getElementById("display-input");
 const keysDiv = document.getElementById("keys-div");
 const point = document.getElementById("point");
 const clear = document.getElementById("clear");
 const equals = document.getElementById("equals");
+const add = document.getElementById("add");
+const subtract = document.getElementById("subtract");
+const divide = document.getElementById("divide");
+const multiply = document.getElementById("multiply");
+const result = document.getElementById("result")
 
 const numbersObject = {
   'nine': '9',
@@ -21,16 +29,34 @@ const numbersObject = {
   'zero': '0',
   'divide': '/',
   'add': '+',
-  'multiply': 'x',
+  'multiply': '*',
   'subtract': '-',
 }
 
 
 
+/* Initialize Operating Values */
+
+let operand1,
+    operand2,
+    operator = '';
+let operand1Set,
+    operatorSet = false;
+
+add.disabled,
+subtract.disabled,
+multiply.disabled,
+divide.disabled = true;
+
+
+
 /* Event Listeners */
+
+welcomeMessageButton.addEventListener('click', closeWelcomeMessageBox);
 
 document.body.addEventListener('keypress', bindKeys);
 keysDiv.addEventListener('click', updateDisplayInput);
+keysDiv.addEventListener('click', updateOperationVariables);
 clear.addEventListener('click', backspaceDisplay);
 clear.addEventListener('dbclick', clearDisplay);
 
@@ -38,18 +64,8 @@ clear.addEventListener('dbclick', clearDisplay);
 
 /* Functions */
 
-function updateDisplayInput(event) {
-  displayInput.value += numbersObject[event.target.id] !== undefined && event.target.id !== 'point' ? numbersObject[event.target.id] : '';
-  if (event.target.id === 'point' && point.disabled !== true) {
-    displayInput.value += '.';
-    point.disabled = true;
-  }
-  if (event.target.id === 'subtract'
-      || event.target.id === 'add'
-      || event.target.id === 'multiply'
-      || event.target.id === 'divide') {
-        point.disabled = false;
-      }
+function closeWelcomeMessageBox() {
+  welcomeMessageContainer.style.display = "none";
 }
 
 function bindKeys(event) {
@@ -193,41 +209,249 @@ function bindKeys(event) {
   }
 }
 
+function updateDisplayInput(event) {
+  displayInput.value += numbersObject[event.target.id] !== undefined 
+                          && event.target.id !== 'point' 
+                          && event.target.id !== 'subtract' 
+                          && event.target.id !== 'add' 
+                          && event.target.id !== 'multiply' 
+                          && event.target.id !== 'divide' 
+                          && event.target.id !== 'clear' 
+                          && event.target.id !== 'equals' 
+                          ? numbersObject[event.target.id] 
+                          : '';
+
+  // The switch statement disables the point key once pressed, and re-enables it when an operator is pressed
+  // It also disables all operators when one is pressed
+  // The default re-enables the operators when a key that is not point is pressed
+  switch (event.target.id) {
+    case 'point':
+      if (point.disabled !== true) {
+        displayInput.value += '.';
+        point.disabled = true;
+      }
+      break;
+    case 'subtract':
+      point.disabled = false;
+      if (subtract.disabled !== true) {
+        displayInput.value += '-';
+        subtract.disabled = true;
+        add.disabled = true;
+        multiply.disabled = true;
+        divide.disabled = true;
+      }
+      
+      break;
+    case 'add':
+      point.disabled = false;
+      if (add.disabled !== true) {
+        displayInput.value += '+';
+        subtract.disabled = true;
+        add.disabled = true;
+        multiply.disabled = true;
+        divide.disabled = true;
+      }
+      
+      break;
+    case 'multiply':
+      point.disabled = false;
+      if (multiply.disabled !== true) {
+        displayInput.value += '*';
+        subtract.disabled = true;
+        add.disabled = true;
+        multiply.disabled = true;
+        divide.disabled = true;
+      }
+      
+      break;
+    case 'divide':
+      point.disabled = false;
+      if (divide.disabled !== true) {
+        displayInput.value += '/';
+        subtract.disabled = true;
+        add.disabled = true;
+        multiply.disabled = true;
+        divide.disabled = true;
+      }
+      
+      break;
+  
+    default:
+      if (event.target.id !== 'point') {
+        subtract.disabled = false;
+        add.disabled = false;
+        multiply.disabled = false;
+        divide.disabled = false;
+      }
+      break;
+  }
+}
+
+function updateOperationVariables(event) {
+  if (operand1Set === false) { //If user is inputting numbers or point for the first time
+    if (
+      (event.target.id === 'subtract' 
+      || event.target.id === 'add' 
+      || event.target.id === 'multiply' 
+      || event.target.id === 'divide') 
+      && displayInput.value !== ''
+      ) 
+    {
+      operand1Set = true;
+      operator = event.target.id;
+      operatorSet = true;
+    } else if (event.target.id === 'clear' && displayInput.value !== '' || event.target.id === 'equals') {
+      continue;
+    } else {
+      operand1 += numbersObject[event.target.id];
+    }
+  } else if (operand1Set === true && operatorSet === true) { //If user is putting numbers or point after operator OR if user is pressing equals(or Enter)
+
+    if (
+      event.target.id !== 'add' 
+      && event.target.id !== 'subtract' 
+      && event.target.id !== 'multiply' 
+      && event.target.id !== 'divide' 
+      && event.target.id !== 'equals' 
+      )
+    {
+      operand2 += numbersObject[event.target.id];
+
+    } else if (
+      (event.target.id === 'add' 
+      || event.target.id === 'subtract' 
+      || event.target.id === 'multiply' 
+      || event.target.id === 'divide') 
+      && (displayInput.value[displayInput.value.length - 2] !== '.')
+      ) 
+    {
+      operator = event.target.id;
+      if (
+        displayInput.value[displayInput.value.length - 1] !== '+'
+        && displayInput.value[displayInput.value.length - 1] !== '-'
+        && displayInput.value[displayInput.value.length - 1] !== '*'
+        && displayInput.value[displayInput.value.length - 1] !== '/'
+        )
+        {
+          let _operator = operator === 'add'
+                            ? _add
+                            : operator === 'subtract'
+                            ? _subtract
+                            : operator === 'multiply'
+                            ? _multiply
+                            : operator === 'divide'
+                            ? _divide
+                            : '';
+          const _result = operate(_operator, Number(operand1), Number(operand2));
+          operand1 = _result + '';
+          result.value = _result
+        }
+
+    } else if (
+      event.target.id === 'equals' 
+      && displayInput.value[displayInput.value.length - 1] !== '.'
+      && displayInput.value[displayInput.value.length - 1] !== '+'
+      && displayInput.value[displayInput.value.length - 1] !== '-'
+      && displayInput.value[displayInput.value.length - 1] !== '*'
+      && displayInput.value[displayInput.value.length - 1] !== '/'
+      ) 
+    {
+      let _operator = operator === 'add'
+                        ? _add
+                        : operator === 'subtract'
+                        ? _subtract
+                        : operator === 'multiply'
+                        ? _multiply
+                        : operator === 'divide'
+                        ? _divide
+                        : '';
+      const _result = operate(_operator, Number(operand1), Number(operand2));
+      operand1 = _result + '';
+      result.value = _result
+    }
+  }
+
+}
+
 function backspaceDisplay() {
   const RemovalObj = removeLastCharInString(displayInput.value);
   displayInput.value = RemovalObj['newString'];
-  if (RemovalObj['removed'] === '.') {
-    point.disabled = false;
+  
+  switch (RemovalObj['removed']) {
+    case '.':
+      point.disabled = false;
+      break;
+    case '-':
+      subtract.disabled = false;
+      add.disabled = false;
+      multiply.disabled = false;
+      divide.disabled = false;
+      break;
+    case '+':
+      subtract.disabled = false;
+      add.disabled = false;
+      multiply.disabled = false;
+      divide.disabled = false;
+      break;
+    case '*':
+      subtract.disabled = false;
+      add.disabled = false;
+      multiply.disabled = false;
+      divide.disabled = false;
+      break;
+    case '/':
+      subtract.disabled = false;
+      add.disabled = false;
+      multiply.disabled = false;
+      divide.disabled = false;
+      break;
+  
+    default:
+      break;
+  }
+
+  if (displayInput.value.length < 1) {
+    clearDisplay();
   }
 
 }
 
 function clearDisplay() {
   displayInput.value = '';
+  operand1 = '';
+  operand2 = '';
+  operand1Set = false;
+  operator = '';
+  operatorSet = false;
+  subtract.disabled = false;
+  add.disabled = false;
+  multiply.disabled = false;
+  divide.disabled = false;
+  point.disabled = false;
 }
 
-function add(num1, num2) {
-  return +(num1 + num2).toFixed(1);
+
+
+/* Helper Functions */
+
+function _add(num1, num2) {
+  return +(num1 + num2);
 }
 
-function subtract(num1, num2) {
-  return +(num1 - num2).toFixed(1)
+function _subtract(num1, num2) {
+  return +(num1 - num2);
 }
 
-function multiply(num1, num2) {
-  return +(num1 * num2).toFixed(1)
+function _multiply(num1, num2) {
+  return +(num1 * num2);
 }
 
-function divide(num1, num2) {
-  return +(num1 / num2).toFixed(1)
+function _divide(num1, num2) {
+  return +(num1 / num2);
 }
 
 function operate(operator, num1, num2) {
   return operator(+num1, +num2)
-}
-
-function populateOnKeyPress(key, display) {
-  display.innerText = key.name;
 }
 
 function decimalPlacesCount(num) {

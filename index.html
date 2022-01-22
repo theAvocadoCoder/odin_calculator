@@ -3,7 +3,6 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <link rel="stylesheet" href="./styles/style.css">
@@ -15,37 +14,57 @@
 <body>
   <div id="" class="flex-div">
     <div id="" class="flex-div">
+      <div id="welcome-message-container" class="flex-div centered">
+        <div id="welcome-message-bubble" class="flex-div col centered">
+          <h1>Simple Calculator</h1>
+          <h2>Tips for Use</h2>
+          <ul>
+            <li>You can use the numbers and operators on your physical keyboard</li>
+            <li>Pressing the <em>'Spacebar'</em> key will erase your last input</li>
+            <li>Holding the <em>'Shift'</em> key while pressing the <em>'Spacebar'</em> key will clear the display</li>
+            <li>Pressing the <em>'='</em> key will show the result of your calculation</li>
+            <li>Pressing the <em>'Enter'</em> key will also show the result of your calculation</li>
+          </ul>
+          <button id="welcome-message-button">Close</button>
+        </div>
+      </div>
       <div id="calculator" class="flex-div col">
         <div id="display" class="flex-div col">
-          <div id="input">
-            <input disabled id="display-input" type="text" value="" />
+          <div id="input-div" class="flex-div col centered">
+            <label for="display-input">
+              <input disabled id="display-input" type="text" name="display-input" value="" />
+            </label>
           </div>
-          <div id="answer"></div>
+          <div id="result-div" class="flex-div col centered">
+            <label for="result">
+              <input disabled id="result" type="text" name="result" value="" />
+            </label>
+          </div>
         </div>
         <div id="space-div"></div>
         <div id="keys-div" class="flex-div">
           <div id="left-div" class="flex-div col">
             <div id="numbers-div" class="flex-div">
-              <div id="nine" class="flex-div">9</div>
-              <div id="eight" class="flex-div">8</div>
-              <div id="seven" class="flex-div">7</div>
-              <div id="six" class="flex-div">6</div>
-              <div id="five" class="flex-div">5</div>
-              <div id="four" class="flex-div">4</div>
-              <div id="three" class="flex-div">3</div>
-              <div id="two" class="flex-div">2</div>
-              <div id="one" class="flex-div">1</div>
-              <div id="point" class="flex-div">.</div>
-              <div id="zero" class="flex-div">0</div>
-              <div id="divide" class="flex-div">/</div>
+              <div id="nine" class="flex-div centered">9</div>
+              <div id="eight" class="flex-div centered">8</div>
+              <div id="seven" class="flex-div centered">7</div>
+              <div id="six" class="flex-div centered">6</div>
+              <div id="five" class="flex-div centered">5</div>
+              <div id="four" class="flex-div centered">4</div>
+              <div id="three" class="flex-div centered">3</div>
+              <div id="two" class="flex-div centered">2</div>
+              <div id="one" class="flex-div centered">1</div>
+              <div id="point" class="flex-div centered">.</div>
+              <div id="zero" class="flex-div centered">0</div>
+              <div id="divide" class="flex-div centered">/</div>
             </div>
-            <div id="equals" class="flex-div">=</div>
+            <div id="equals" class="flex-div centered">=</div>
           </div>
           <div id="right-div" class="flex-div col">
-            <div id="clear" class="flex-div">CLR</div>
-            <div id="add" class="flex-div">+</div>
-            <div id="multiply" class="flex-div">x</div>
-            <div id="subtract" class="flex-div">-</div>
+            <div id="clear" class="flex-div centered">CLR</div>
+            <div id="add" class="flex-div centered">+</div>
+            <div id="multiply" class="flex-div centered">*</div>
+            <div id="subtract" class="flex-div centered">-</div>
           </div>
         </div>
       </div>
