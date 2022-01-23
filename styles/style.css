@@ -10,6 +10,18 @@ body {
   margin: inherit;
 }
 
+#primary-container {
+  width: 100vw;
+  height: 100vh;
+  background-color: black;
+}
+
+#secondary-container {
+  width: 100%;
+  height: 100%;
+  background-color: black;
+}
+
 #welcome-message-container {
   position: absolute;
   width: 100vw;
@@ -32,9 +44,13 @@ body {
   text-align: left;
 }
 
+#welcome-message-bubble > button {
+  width: 50%;
+}
+
 #calculator {
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   background-color: black;
 }
 
@@ -112,8 +128,9 @@ label[for="result"] {
 #equals {
   width: 100%;
   height: 20%;
-  border-radius: 1rem;
-  border: 1px solid aliceblue;
+  border-radius: 0.5rem;
+  border-right: 3px ridge rgb(66, 89, 131);
+  border-bottom: 3px ridge rgb(66, 89, 131);
   background-color: cadetblue;
   color: aliceblue;
   font-size: 2rem;
@@ -122,8 +139,9 @@ label[for="result"] {
 #numbers-div > div {
   width: 33.3%;
   height: 25%;
-  border-radius: 1rem;
-  border: 1px solid aliceblue;
+  border-radius: 0.5rem;
+  border-right: 3px ridge rgb(66, 89, 131);
+  border-bottom: 3px ridge rgb(66, 89, 131);
   background-color: cadetblue;
   color: aliceblue;
   font-size: 2rem;
@@ -137,8 +155,9 @@ label[for="result"] {
 #right-div > div {
   width: 100%;
   height: 20%;
-  border-radius: 1rem;
-  border: 1px solid aliceblue;
+  border-radius: 0.5rem;
+  border-right: 3px ridge brown;
+  border-bottom: 3px ridge brown;
   background-color: coral;
   color: aliceblue;
   font-size: 2rem;
@@ -160,24 +179,65 @@ label[for="result"] {
   justify-content: center;
   align-items: center;
 }
-/*
-#keys-div > div {
-  flex: 1 0.3 auto;
-}
-
-#left-div {
-  flex: 3 1 auto;
-}
-
-#right-div > div {
-  flex: 1 0.5 auto;
-}
-
-#clear {
-  flex: 2 1 auto;
-}
 
 /*
   Screens:
-    320, 400 
+    min 320   - mobile (base)
+    min 768   - tablet
+      scaling up: base * 2.4
+    min 1024  - laptop
+      scaling up: base * 3.2
+    min 2560  - 4k
+      scaling up: base * 8.0
 */
+
+/* Tablets */
+@media screen and (min-width: 768px) {
+  #welcome-message-bubble {
+    padding: 2rem;
+    gap: 1rem;
+  }
+
+  #welcome-message-bubble > * {
+    font-size: 2rem;
+  }
+
+  #secondary-container {
+    width: 80%;
+    height: 80%;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    border: 1px solid slategray;
+  }
+
+  #display-input {
+    font-size: 3.2rem;
+  }
+
+  #result {
+    font-size: 3.7rem;
+  }
+
+  #keys-div > *,
+  #keys-div > div > *,
+  #keys-div > div > div > * {
+    font-size: 3.2rem;
+  }
+
+  /* #secondary-container {
+  } */
+}
+
+/* Laptops */
+@media screen and (min-width: 1024px) {
+  #secondary-container {
+    width: 50%;
+  }
+}
+
+/* 4K Screens */
+@media screen and (min-width: 2560px) {
+  #secondary-container {
+    width: 30%;
+  }
+}
