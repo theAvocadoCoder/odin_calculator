@@ -40,12 +40,12 @@ const numbersObject = {
 let operand1,
     operand2,
     operator = '';
-let operand1Set,
-    operatorSet = false;
+let operand1IsSet,
+    operatorIsSet = false;
 
-add.disabled,
-subtract.disabled,
-multiply.disabled,
+add.disabled = true;
+subtract.disabled = true;
+multiply.disabled = true;
 divide.disabled = true;
 
 
@@ -54,7 +54,6 @@ divide.disabled = true;
 
 welcomeMessageButton.addEventListener('click', closeWelcomeMessageBox);
 
-document.body.addEventListener('keypress', bindKeys);
 keysDiv.addEventListener('click', updateDisplayInput);
 keysDiv.addEventListener('click', updateOperationVariables);
 clear.addEventListener('click', backspaceDisplay);
@@ -62,11 +61,7 @@ clear.addEventListener('dbclick', clearDisplay);
 
 
 
-/* Functions */
-
-function closeWelcomeMessageBox() {
-  welcomeMessageContainer.style.display = "none";
-}
+/* Calculator Functions */
 
 function bindKeys(event) {
   // console.log(event)
@@ -79,6 +74,7 @@ function bindKeys(event) {
         }
       };
       updateDisplayInput(obj);
+      updateOperationVariables(obj);
       break;
     case '8':
       obj = {
@@ -87,6 +83,7 @@ function bindKeys(event) {
         }
       };
       updateDisplayInput(obj);
+      updateOperationVariables(obj);
       break;
     case '7':
       obj = {
@@ -95,6 +92,7 @@ function bindKeys(event) {
         }
       };
       updateDisplayInput(obj);
+      updateOperationVariables(obj);
       break;
     case '6':
       obj = {
@@ -103,6 +101,7 @@ function bindKeys(event) {
         }
       };
       updateDisplayInput(obj);
+      updateOperationVariables(obj);
       break;
     case '5':
       obj = {
@@ -111,6 +110,7 @@ function bindKeys(event) {
         }
       };
       updateDisplayInput(obj);
+      updateOperationVariables(obj);
       break;
     case '4':
       obj = {
@@ -119,6 +119,7 @@ function bindKeys(event) {
         }
       };
       updateDisplayInput(obj);
+      updateOperationVariables(obj);
       break;
     case '3':
       obj = {
@@ -127,6 +128,7 @@ function bindKeys(event) {
         }
       };
       updateDisplayInput(obj);
+      updateOperationVariables(obj);
       break;
     case '2':
       obj = {
@@ -135,6 +137,7 @@ function bindKeys(event) {
         }
       };
       updateDisplayInput(obj);
+      updateOperationVariables(obj);
       break;
     case '1':
       obj = {
@@ -143,6 +146,7 @@ function bindKeys(event) {
         }
       };
       updateDisplayInput(obj);
+      updateOperationVariables(obj);
       break;
     case '0':
       obj = {
@@ -151,6 +155,7 @@ function bindKeys(event) {
         }
       };
       updateDisplayInput(obj);
+      updateOperationVariables(obj);
       break;
     case '.':
       obj = {
@@ -159,6 +164,7 @@ function bindKeys(event) {
         }
       };
       updateDisplayInput(obj);
+      updateOperationVariables(obj);
       break;
     case '/':
       obj = {
@@ -167,6 +173,7 @@ function bindKeys(event) {
         }
       };
       updateDisplayInput(obj);
+      updateOperationVariables(obj);
       break;
     case '-':
       obj = {
@@ -175,6 +182,7 @@ function bindKeys(event) {
         }
       };
       updateDisplayInput(obj);
+      updateOperationVariables(obj);
       break;
     case '+':
       obj = {
@@ -183,6 +191,7 @@ function bindKeys(event) {
         }
       };
       updateDisplayInput(obj);
+      updateOperationVariables(obj);
       break;
     case '*':
       obj = {
@@ -191,9 +200,17 @@ function bindKeys(event) {
         }
       };
       updateDisplayInput(obj);
+      updateOperationVariables(obj);
       break;
-    case '='||'Enter':
+    case '=':
+    case 'Enter':
       // Equals function
+      obj = {
+        target: {
+          id: 'equals'
+        }
+      };
+      updateOperationVariables(obj);
       break;
     case ' ':
       // space bar to delete and holding shift to clear all
@@ -209,17 +226,21 @@ function bindKeys(event) {
   }
 }
 
+function closeWelcomeMessageBox() {
+  welcomeMessageContainer.style.display = "none";
+  document.body.addEventListener('keypress', bindKeys);
+  clearDisplay();
+}
+
 function updateDisplayInput(event) {
   displayInput.value += numbersObject[event.target.id] !== undefined 
-                          && event.target.id !== 'point' 
-                          && event.target.id !== 'subtract' 
-                          && event.target.id !== 'add' 
-                          && event.target.id !== 'multiply' 
-                          && event.target.id !== 'divide' 
-                          && event.target.id !== 'clear' 
-                          && event.target.id !== 'equals' 
-                          ? numbersObject[event.target.id] 
-                          : '';
+                        && event.target.id !== 'point' 
+                        && event.target.id !== 'subtract' 
+                        && event.target.id !== 'add' 
+                        && event.target.id !== 'multiply' 
+                        && event.target.id !== 'divide'
+                        ? numbersObject[event.target.id] 
+                        : '';
 
   // The switch statement disables the point key once pressed, and re-enables it when an operator is pressed
   // It also disables all operators when one is pressed
@@ -277,100 +298,138 @@ function updateDisplayInput(event) {
       break;
   
     default:
-      if (event.target.id !== 'point') {
-        subtract.disabled = false;
-        add.disabled = false;
-        multiply.disabled = false;
-        divide.disabled = false;
-      }
+      subtract.disabled = false;
+      add.disabled = false;
+      multiply.disabled = false;
+      divide.disabled = false;
       break;
   }
 }
 
 function updateOperationVariables(event) {
-  if (operand1Set === false) { //If user is inputting numbers or point for the first time
+  // The very first key that the user presses should be in the numbersObject and shouldn't be an operator
+  if (
+    operand1 === ''
+    && operand2 === ''
+    && operator === ''
+    && operand1IsSet === false
+    && operatorIsSet === false
+  ) {
+    operand1 += numbersObject[event.target.id] !== undefined 
+                && event.target.id !== 'subtract' 
+                && event.target.id !== 'add' 
+                && event.target.id !== 'multiply' 
+                && event.target.id !== 'divide'
+                ? numbersObject[event.target.id] 
+                : '';
+  } 
+  // This block manages consecutive keypresses for the first operand or pressing an operator when the second operand is not set
+  // The next keys the user presses should be in the numbersObject
+  // if the user presses an operator, the first operand is complete and the operator gets set
+  else if (
+    operand1 !== ''
+    && operand2 === ''
+    && operator === ''
+    && operand1IsSet === false
+    && operatorIsSet === false
+  ) {
+    // this block manages operator keypresses
     if (
-      (event.target.id === 'subtract' 
+      event.target.id === 'subtract' 
       || event.target.id === 'add' 
       || event.target.id === 'multiply' 
-      || event.target.id === 'divide') 
-      && displayInput.value !== ''
-      ) 
-    {
-      operand1Set = true;
-      operator = event.target.id;
-      operatorSet = true;
-    } else if (event.target.id === 'clear' && displayInput.value !== '' || event.target.id === 'equals') {
-      continue;
-    } else {
-      operand1 += numbersObject[event.target.id];
-    }
-  } else if (operand1Set === true && operatorSet === true) { //If user is putting numbers or point after operator OR if user is pressing equals(or Enter)
-
-    if (
-      event.target.id !== 'add' 
-      && event.target.id !== 'subtract' 
-      && event.target.id !== 'multiply' 
-      && event.target.id !== 'divide' 
-      && event.target.id !== 'equals' 
-      )
-    {
-      operand2 += numbersObject[event.target.id];
-
-    } else if (
-      (event.target.id === 'add' 
-      || event.target.id === 'subtract' 
-      || event.target.id === 'multiply' 
-      || event.target.id === 'divide') 
-      && (displayInput.value[displayInput.value.length - 2] !== '.')
-      ) 
-    {
-      operator = event.target.id;
-      if (
-        displayInput.value[displayInput.value.length - 1] !== '+'
-        && displayInput.value[displayInput.value.length - 1] !== '-'
-        && displayInput.value[displayInput.value.length - 1] !== '*'
-        && displayInput.value[displayInput.value.length - 1] !== '/'
-        )
-        {
-          let _operator = operator === 'add'
-                            ? _add
-                            : operator === 'subtract'
-                            ? _subtract
-                            : operator === 'multiply'
-                            ? _multiply
-                            : operator === 'divide'
-                            ? _divide
-                            : '';
-          const _result = operate(_operator, Number(operand1), Number(operand2));
-          operand1 = _result + '';
-          result.value = _result
-        }
-
-    } else if (
-      event.target.id === 'equals' 
-      && displayInput.value[displayInput.value.length - 1] !== '.'
-      && displayInput.value[displayInput.value.length - 1] !== '+'
-      && displayInput.value[displayInput.value.length - 1] !== '-'
-      && displayInput.value[displayInput.value.length - 1] !== '*'
-      && displayInput.value[displayInput.value.length - 1] !== '/'
-      ) 
-    {
-      let _operator = operator === 'add'
-                        ? _add
-                        : operator === 'subtract'
-                        ? _subtract
-                        : operator === 'multiply'
-                        ? _multiply
-                        : operator === 'divide'
-                        ? _divide
-                        : '';
-      const _result = operate(_operator, Number(operand1), Number(operand2));
-      operand1 = _result + '';
-      result.value = _result
+      || event.target.id === 'divide'
+    ) {
+      operand1IsSet = true;
+      operator = numbersObject[event.target.id];
+      operatorIsSet = true;
+    } 
+    // this block manages non-operator keypresses
+    else if (
+        numbersObject[event.target.id] !== undefined 
+        && event.target.id !== 'subtract' 
+        && event.target.id !== 'add' 
+        && event.target.id !== 'multiply' 
+        && event.target.id !== 'divide'
+    ) {
+        operand1 += numbersObject[event.target.id];
     }
   }
+  // This block manages keypresses for the second operand for the first time
+  else if (
+    operand1 !== ''
+    && operand2 === ''
+    && operator !== ''
+    && operand1IsSet === true
+    && operatorIsSet === true
+  ) {
+    operand2 += numbersObject[event.target.id];
+  }
+  //  This block manages consecutive keypresses for the second operand and operator/equals presses when operand2 has a value
+  else if (
+    operand1 !== ''
+    && operand2 !== ''
+    && operator !== ''
+    && operand1IsSet === true
+    && operatorIsSet === true 
+  ) {
+    if (event.target.id === 'equals') {
+      // calculate and set new operator
+      // also update operand1 & operand2
+      // also update displayInput.value
+      // also update result.value
+      let _operator = operator === '+' 
+                      ? _add
+                      : operator === '-' 
+                      ? _subtract
+                      : operator === '*' 
+                      ? _multiply
+                      : operator === '/'
+                      ? _divide
+                      : false;
+      result.value = operate(_operator, operand1, operand2);
+      operator = '';
+      operatorIsSet = false;
+      operand1 = result.value;
+      operand1IsSet = false;
+      operand2 = '';
+      displayInput.value = `${operand1}`;
+    } else if (
+      event.target.id === 'add'
+      || event.target.id === 'subtract'
+      || event.target.id === 'multiply'
+      || event.target.id === 'divide'
+    ) {
+      // calculate and set new operator
+      // also update operand1 & operand2
+      // also update displayInput.value
+      // also update result.value
+      let _operator = event.target.id === 'add' 
+                      ? _add
+                      : event.target.id === 'subtract' 
+                      ? _subtract
+                      : event.target.id === 'multiply' 
+                      ? _multiply
+                      : event.target.id === 'divide'
+                      ? _divide
+                      : false;
+      result.value = operate(_operator, operand1, operand2);
+      operator = numbersObject[event.target.id];
+      operand1 = result.value;
+      operand2 = '';
+      displayInput.value = `${operand1}${operator}`;
 
+    } else if (
+      numbersObject[event.target.id] !== undefined 
+      && event.target.id !== 'subtract' 
+      && event.target.id !== 'add' 
+      && event.target.id !== 'multiply' 
+      && event.target.id !== 'divide'
+    ) {
+      operand2 += numbersObject[event.target.id];
+      // operand1 = result.value !== '' ? result.value : operand1;
+    }
+  }
 }
 
 function backspaceDisplay() {
@@ -382,24 +441,32 @@ function backspaceDisplay() {
       point.disabled = false;
       break;
     case '-':
+      operator = '';
+      operatorIsSet = false
       subtract.disabled = false;
       add.disabled = false;
       multiply.disabled = false;
       divide.disabled = false;
       break;
     case '+':
+      operator = '';
+      operatorIsSet = false
       subtract.disabled = false;
       add.disabled = false;
       multiply.disabled = false;
       divide.disabled = false;
       break;
     case '*':
+      operator = '';
+      operatorIsSet = false
       subtract.disabled = false;
       add.disabled = false;
       multiply.disabled = false;
       divide.disabled = false;
       break;
     case '/':
+      operator = '';
+      operatorIsSet = false
       subtract.disabled = false;
       add.disabled = false;
       multiply.disabled = false;
@@ -407,6 +474,11 @@ function backspaceDisplay() {
       break;
   
     default:
+      if (operand1 !== '' && operand2 === '') {
+        operand1 = removeLastCharInString(operand1)['newString'];
+      } else if (operand2 !== '') {
+        operand2 = removeLastCharInString(operand2)['newString'];
+      }
       break;
   }
 
@@ -418,15 +490,16 @@ function backspaceDisplay() {
 
 function clearDisplay() {
   displayInput.value = '';
+  result.value = '';
   operand1 = '';
   operand2 = '';
-  operand1Set = false;
   operator = '';
-  operatorSet = false;
-  subtract.disabled = false;
-  add.disabled = false;
-  multiply.disabled = false;
-  divide.disabled = false;
+  operand1IsSet = false;
+  operatorIsSet = false;
+  subtract.disabled = true;
+  add.disabled = true;
+  multiply.disabled = true;
+  divide.disabled = true;
   point.disabled = false;
 }
 
@@ -451,11 +524,25 @@ function _divide(num1, num2) {
 }
 
 function operate(operator, num1, num2) {
-  return operator(+num1, +num2)
+  if (operator === false) {
+    return
+  }
+  let result = operator(+num1, +num2);
+  return decimalPlacesCount(result) === 0 
+          ? result.toFixed(0)
+          : decimalPlacesCount(result) === 1 
+          ? result.toFixed(1) 
+          : decimalPlacesCount(result) === 2 
+          ? result.toFixed(2) 
+          : decimalPlacesCount(result) === 3 
+          ? result.toFixed(3) 
+          : result.toFixed(4);
 }
 
 function decimalPlacesCount(num) {
-  return (num + '').split('.')[1].length;
+  return (num + '').split('.')[1] /* (num + '') smply turns the number into an array */
+          ? (num + '').split('.')[1].length 
+          : 0;
 }
 
 function removeLastCharInString(str) {
