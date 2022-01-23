@@ -57,7 +57,7 @@ welcomeMessageButton.addEventListener('click', closeWelcomeMessageBox);
 keysDiv.addEventListener('click', updateDisplayInput);
 keysDiv.addEventListener('click', updateOperationVariables);
 clear.addEventListener('click', backspaceDisplay);
-clear.addEventListener('dbclick', clearDisplay);
+clear.addEventListener('dblclick', clearDisplay);
 
 
 
